@@ -1,0 +1,13 @@
+
+
+public class JniMain {
+
+	
+	public native static String getStringFromC();
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
