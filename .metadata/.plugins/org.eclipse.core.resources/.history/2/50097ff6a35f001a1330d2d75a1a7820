@@ -1,0 +1,26 @@
+
+
+public class JniMain {
+
+	//静态方法
+	public native static String getStringFromC();
+	
+	//非静态方法
+	public native String getStringFromC2();
+	
+	static{
+		System.loadLibrary("JNI_Demo1");
+	}
+	
+	public static void main(String[] args) {
+		
+		//调用静态native方法
+		System.out.println(getStringFromC());
+		
+		//调用非静态native方法
+		JniMain jm = new JniMain();
+		System.out.println(jm.getStringFromC2());
+		
+	}
+
+}

@@ -1,0 +1,41 @@
+
+
+public class JniMain {
+
+	//静态方法
+	public native static String getStringFromC();
+	
+	//非静态方法
+	public native String getStringFromC2();
+	
+	//一个全局的字符串
+	public String key = "key";
+	
+	//修改key的方法
+	public native String accessFieldModify();
+	
+	public static int count = 2;
+	
+	public native void accessStaticFieldModify();
+	
+	static{
+		System.loadLibrary("JNI_Demo1");
+	}
+	
+	public static void main(String[] args) {
+		
+		//调用静态native方法
+		System.out.println(getStringFromC());
+		
+		//调用非静态native方法
+		JniMain jm = new JniMain();
+		System.out.println(jm.getStringFromC2());
+		
+		System.out.println("change before key: "+jm.key);
+		jm.accessFieldModify();
+		System.out.println("after change key: "+jm.key);
+		
+		
+	}
+
+}

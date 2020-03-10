@@ -1,0 +1,92 @@
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+
+public class JniMain {
+
+	//静态方法
+	public native static String getStringFromC();
+	
+	//非静态方法
+	public native String getStringFromC2();
+	
+	//一个全局的字符串
+	public String key = "key";
+	
+	//修改key的方法
+	public native String accessFieldModify();
+	
+	public static int count = 2;
+	
+	public native void accessStaticFieldModify();
+	
+	static{
+		System.loadLibrary("JNI_Demo1");
+	}
+	
+	//----------------------访问非静态方法-----------------------
+	public native void accessMethod();
+	
+	public int getRandomInt(int max) {
+		return new Random().nextInt(max);
+	}
+	//---------------------------------------------
+	
+	//----------------------访问静态方法-----------------------
+	public native void accessStaticMethod();
+	public static String getRandomUUId() {
+		return UUID.randomUUID().toString();
+	}
+	//---------------------------------------------
+	
+	//----------------------访问构造方法方法-----------------------
+	public native Date accessConstructor();
+	//---------------------------------------------
+	
+	//----------------------向jni层传递字符串--------------------
+	public native String chineseChars(String str);
+	//---------------------------------------------
+	
+	
+	public static void main(String[] args) {
+		
+		//调用静态native方法
+//		System.out.println(getStringFromC());
+		
+		//调用非静态native方法
+		JniMain jm = new JniMain();
+		System.out.println(jm.getStringFromC2());
+		
+		System.out.println("change before key: "+jm.key);
+		jm.accessFieldModify();
+		System.out.println("after change key: "+jm.key);
+		
+		System.out.println("change before count: " + count);
+		jm.accessStaticFieldModify();
+		System.out.println("after change count: " + count);
+		
+		//使用jni调用java类的非静态方法
+		jm.accessMethod();
+		
+		//使用jni调用java类的静态方法
+		jm.accessStaticMethod();
+		
+		//使用jni调用java类的构造方法
+		jm.accessConstructor();
+	
+		String chineseChars = "";
+		try {
+			chineseChars = new String("德玛西亚".getBytes(),"GB2312");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		jm.chineseChars(chineseChars);
+		
+	}
+	
+	
+
+}

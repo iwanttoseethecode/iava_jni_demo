@@ -1,0 +1,18 @@
+
+
+public class JniMain {
+
+	//¾²Ì¬·½·¨
+	public native static String getStringFromC();
+	
+	
+	static{
+		System.loadLibrary("JNI_Demo1");
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(getStringFromC());
+	}
+
+}

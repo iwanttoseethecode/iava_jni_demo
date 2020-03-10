@@ -1,4 +1,7 @@
-
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 
 public class JniMain {
 
@@ -22,10 +25,34 @@ public class JniMain {
 		System.loadLibrary("JNI_Demo1");
 	}
 	
+	//----------------------访问非静态方法-----------------------
+	public native void accessMethod();
+	
+	public int getRandomInt(int max) {
+		return new Random().nextInt(max);
+	}
+	//---------------------------------------------
+	
+	//----------------------访问静态方法-----------------------
+	public native void accessStaticMethod();
+	public static String getRandomUUId() {
+		return UUID.randomUUID().toString();
+	}
+	//---------------------------------------------
+	
+	//----------------------访问构造方法方法-----------------------
+	public native Date accessConstructor();
+	//---------------------------------------------
+	
+	//----------------------向jni层传递字符串--------------------
+	public native String chineseChars(String str);
+	//---------------------------------------------
+	
+	
 	public static void main(String[] args) {
 		
 		//调用静态native方法
-		System.out.println(getStringFromC());
+//		System.out.println(getStringFromC());
 		
 		//调用非静态native方法
 		JniMain jm = new JniMain();
@@ -39,6 +66,21 @@ public class JniMain {
 		jm.accessStaticFieldModify();
 		System.out.println("after change count: " + count);
 		
+		//使用jni调用java类的非静态方法
+		jm.accessMethod();
+		
+		//使用jni调用java类的静态方法
+		jm.accessStaticMethod();
+		
+		//使用jni调用java类的构造方法
+		jm.accessConstructor();
+	
+		String str = jm.chineseChars("德玛西亚"); 
+		
+		System.out.println("java "+ str);
+		
 	}
+	
+	
 
 }
